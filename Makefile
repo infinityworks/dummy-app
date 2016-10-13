@@ -1,5 +1,4 @@
 APP_NAME=dummy-service
-ENVIRONMENT=''
 
 openshift-origin: origin-image setup-project
 
@@ -25,9 +24,9 @@ secrets: copy-kerberos-config login
 
 deploy: login
 	if oc get services $(APP_NAME); then \
-		oc start-build --wait=true $(ENVIRONMENT) $(APP_NAME); \
+		oc start-build --wait=true $(APP_NAME); \
 	else \
-	oc new-app $(ENVIRONMENT) --name $(APP_NAME) https://github.com/infinityworksltd/dummy-app.git; \
+	oc new-app --name $(APP_NAME) https://github.com/infinityworksltd/dummy-app.git; \
 		sleep 10; \
 		oc logs -f bc/dummy-app; \
 	fi
