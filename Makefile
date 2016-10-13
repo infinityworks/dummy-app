@@ -29,6 +29,5 @@ deploy: login
 	else \
 	oc new-app $(ENVIRONMENT) --name $(APP_NAME) https://github.com/infinityworksltd/dummy-app.git; \
 		sleep 10; \
-		oc logs -f bc/$(APP_NAME); \
-		oc expose service $(APP_NAME); \
+		oc logs -f bc/dummy-app; \
 	fi
