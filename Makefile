@@ -28,3 +28,6 @@ deploy: login
 		sleep 10; \
 		oc logs -f bc/$(APP_NAME); \
 	fi
+
+apply-service-config: login
+	oc apply -R -f openshift
