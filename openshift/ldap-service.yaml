@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    openshift.io/generated-by: OpenShiftNewApp
+    api-gateway.bp.com.security.type: "ldap"
+    api-gateway.bp.com.security.groups: "PowerUsers"
+  creationTimestamp: 2016-10-21T15:17:30Z
+  labels:
+    api-gateway.bp.com/enabled: "true"
+    app: ldap-service
+  name: ldap-service
+  namespace: bp
+  resourceVersion: "201028"
+  selfLink: /api/v1/namespaces/bp/services/ldap-service
+  uid: 7c02289a-97a1-11e6-9fc6-028fadfd6c99
+spec:
+  clusterIP: 172.30.143.233
+  portalIP: 172.30.143.233
+  ports:
+  - name: 3000-tcp
+    port: 3000
+    protocol: TCP
+    targetPort: 3000
+  selector:
+    app: ldap-service
+    deploymentconfig: ldap-service
+  sessionAffinity: None
+  type: ClusterIP
+status:
+  loadBalancer: {}
