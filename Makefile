@@ -1,5 +1,3 @@
-APP_NAME=dummy-service
-
 openshift-origin: origin-image setup-project
 
 ifdef OS_SERVER
