@@ -26,5 +26,5 @@ deploy: login
 	else \
 	oc new-app --name $(APP_NAME) https://github.com/infinityworksltd/dummy-app.git; \
 		sleep 10; \
-		oc logs -f bc/dummy-app; \
+		oc logs -f bc/$(APP_NAME); \
 	fi
