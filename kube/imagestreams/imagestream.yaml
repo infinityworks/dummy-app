@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: ImageStream
+metadata:
+  annotations: {}
+  labels:
+    app: dummy-app
+    group: helix
+    project: tapim-build
+    version: 1.0.0
+  name: dummy-app
+spec:
+  dockerImageRepository: ${IS_REGISTRY}/${IS_PULL_NAMESPACE}/dummy-app
+  tags:
+  - annotations:
+      tags: ${IS_TAG}
+    from:
+      kind: ImageStreamTag
+      name: yaapi-proxy-poc
+    name: ${IS_TAG}

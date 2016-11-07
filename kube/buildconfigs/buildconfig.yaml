@@ -1,0 +1,18 @@
+apiVersion: "v1"
+kind: "BuildConfig"
+metadata:
+  name: "dummy-app"
+spec:
+  output:
+    to:
+      kind: "ImageStreamTag"
+      namespace: "tapim-build"
+      name: "dummy-app:latest"
+  source:
+    git:
+      uri: "http://tfs.bpweb.bp.com:8080/tfs/TradingFunctions/IntegrationServices/_git/dummy-app"
+    sourceSecret:
+      name: "fobuild-git"
+    type: "Git"
+  strategy:
+    type: "Docker"
