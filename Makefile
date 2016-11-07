@@ -12,7 +12,7 @@ login:
 
 deploy: login
 	oc apply -R -f ./kube
-	oc start-build $(APP_NAME)
+	oc start-build dummy-app
 
 delete: login
 	oc delete all -l 'app = $(APP_NAME)'
