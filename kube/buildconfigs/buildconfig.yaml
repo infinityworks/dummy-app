@@ -2,6 +2,8 @@ apiVersion: "v1"
 kind: "BuildConfig"
 metadata:
   name: "dummy-app"
+  labels:
+      app: dummy-app
 spec:
   output:
     to:
