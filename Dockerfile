@@ -1,4 +1,4 @@
-FROM readytalk/nodejs
+FROM openshift/base-centos7
 RUN mkdir /app
 ADD . /app
 WORKDIR /app
