@@ -1,6 +1,4 @@
-FROM mhart/alpine-node-auto:6.6
-RUN apk update
-RUN apk add curl
+FROM readytalk/nodejs
 RUN mkdir /app
 ADD . /app
 WORKDIR /app
