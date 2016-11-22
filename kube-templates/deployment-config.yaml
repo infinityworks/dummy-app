@@ -1,0 +1,113 @@
+apiVersion: v1
+kind: Template
+metadata:
+  creationTimestamp: null
+  name: yaapi
+objects:
+- apiVersion: "v1"
+  kind: "DeploymentConfig"
+  metadata:
+    name: "${APP_NAME}"
+    labels:
+        app: "${APP_NAME}"
+  spec:
+    template:
+      spec:
+        containers:
+          - image: "${KUBERNETES_NAMESPACE}/dummy-app:v1"
+            name: "${APP_NAME}"
+      metadata:
+        labels:
+          deploymentconfig: "dummy-app"
+    containers:
+      name: ${APP_NAME}
+      image: "${KUBERNETES_NAMESPACE}/dummy-app"
+      ports:
+        - containerPort: 3000
+          protocol: TCP
+    replicas: 1
+    triggers:
+        - type: "ConfigChange"
+        - imageChangeParams:
+            automatic: true
+            containerNames:
+              - "${APP_NAME}"
+            from:
+              kind: "ImageStreamTag"
+              name: "dummy-app:latest"
+          type: "ImageChange"
+    strategy:
+      type: "Rolling"
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      api-gateway.bp.com.security.type: "ldap"
+      api-gateway.bp.com.security.groups: "test-app"
+    creationTimestamp: 2016-10-13T16:37:24Z
+    labels:
+      api-gateway.bp.com/enabled: "true"
+      app: ldap
+    name: ldap
+    namespace: ${KUBERNETES_NAMESPACE}
+  spec:
+    ports:
+    - name: 3000-tcp
+      port: 3000
+      protocol: TCP
+      targetPort: 3000
+    selector:
+      deploymentconfig: "ldap"
+    sessionAffinity: None
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+    creationTimestamp: 2016-10-13T16:37:24Z
+    labels:
+      api-gateway.bp.com/enabled: "true"
+      app: dummy-app
+    name: dummy-app
+    namespace: ${KUBERNETES_NAMESPACE}
+  spec:
+    ports:
+    - name: 3000-tcp
+      port: 3000
+      protocol: TCP
+      targetPort: 3000
+    selector:
+      deploymentconfig: "dummy-app"
+    sessionAffinity: None
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      api-gateway.bp.com.security.type: "kerberos"
+      api-gateway.bp.com.security.groups: "test-app"
+    labels:
+      api-gateway.bp.com/enabled: "true"
+      app: kerberos
+    name: kerberised-service
+    namespace: ${KUBERNETES_NAMESPACE}
+  spec:
+    ports:
+    - name: 3000-tcp
+      port: 3000
+      protocol: TCP
+      targetPort: 3000
+    selector:
+      deploymentconfig: "kerberos"
+    sessionAffinity: None
+  status:
+    loadBalancer: {}
+parameters:
+  - name: KUBERNETES_NAMESPACE
+    description: "the namespace the app will be deployed to"
+    required: true
+  - name: APP_NAME
+    description: "the name for the deployed app"
+    required: true

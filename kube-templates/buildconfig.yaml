@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: Template
+metadata:
+  creationTimestamp: null
+  name: yaapi
+objects:
+- apiVersion: "v1"
+  kind: "BuildConfig"
+  metadata:
+    name: "dummy-app"
+    labels:
+        app: dummy-app
+  spec:
+    output:
+      to:
+        kind: "ImageStreamTag"
+        namespace: ${KUBERNETES_NAMESPACE}
+        name: "dummy-app:latest"
+    source:
+      git:
+        uri: "http://tfs.bpweb.bp.com:8080/tfs/TradingFunctions/IntegrationServices/_git/dummy-app"
+      sourceSecret:
+        name: "fobuild-git"
+      type: "Git"
+    strategy:
+      type: "Docker"
+parameters:
+  - name: KUBERNETES_NAMESPACE
+    description: "the namespace the app will be deployed to"
+    required: true
